@@ -24,3 +24,7 @@ Run venv
 ```sh
 .\env\Scripts\activate
 ```
+
+## Used libraries
+
+- requests
