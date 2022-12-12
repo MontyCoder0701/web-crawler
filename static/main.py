@@ -15,5 +15,7 @@ print("")
 
 for c in captures:
     print(c[0] + ": " + c[1])
-    
+
 print("-----")
+
+usd = float(captures[0][1].replace(",", ""))
