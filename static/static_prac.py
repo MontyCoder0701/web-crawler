@@ -1,5 +1,6 @@
 import requests as req
 import re
+from bs4 import BeautifulSoup as BS
 
 # s = "제 생일은 10월 입니다"
 # # pos = s.find("생일은 ")
@@ -39,3 +40,9 @@ import re
 # res = req.get(
 #     "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=감자")
 # print(res.text)
+
+# beautifulsoup 연습
+url = "https://naver.com"
+res = req.get(url)
+soup = BS(res.text, "html.parser")
+print(soup.title)

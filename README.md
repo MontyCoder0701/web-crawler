@@ -28,3 +28,4 @@ Run venv
 ## Used libraries
 
 - requests
+- beautifulsoup4
