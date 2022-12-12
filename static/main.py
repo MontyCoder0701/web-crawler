@@ -19,3 +19,6 @@ for c in captures:
 print("-----")
 
 usd = float(captures[0][1].replace(",", ""))
+won = float(input("달러로 바꾸기 원하는 금액(원)을 입력하세요: "))
+dollar = round(float(won/usd), 2)
+print(f"현재 {won}원은 {dollar}달러입니다.")
