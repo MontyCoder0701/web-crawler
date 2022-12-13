@@ -67,3 +67,40 @@ from bs4 import BeautifulSoup as BS
 #         print(desc.select("div.name")[0].get_text(strip=True))
 #     else:
 #         print("광고")
+
+# Webhook site
+# res = req.post(
+#     "https://webhook.site/d1cfbd4e-5bcf-4fd9-85ce-d9201ca11990", data={
+#         "name": "hi"
+#     })
+# print(res.text)
+
+# imgur 연습
+url = ("https://api.imgur.com/3/configuration/desktop?client_id=546c25a59c58ad7")
+
+f = open("static/image.jpg", "rb")
+img = f.read()
+f.close()
+
+res = req.post(url, files={
+    "image": img,
+    "type": "file",
+    "name": "image.png"
+})
+
+link = res.json()["data"]["link"]
+print(link)
+
+html = f"""
+<html>
+<head>
+    <title> 방금 업로드한 이미지 </title>
+</head>
+<body>
+    <img src="{link}">
+</body>
+</html>
+"""
+
+with open("image.html", "w") as f:
+    f.write(html)
