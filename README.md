@@ -29,3 +29,11 @@ Run venv
 
 - requests
 - beautifulsoup4
+
+## Included files
+
+- Static  
+Includes code that statically crawls stock name, prices and change from Naver and Google.  
+Includes code that statically crawls current exchange rate from Naver.
+
+- Dynamic
