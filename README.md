@@ -31,12 +31,14 @@ Run venv
 - requests
 - beautifulsoup4
 - selenium
+- streamlit
 
 ## Included files
 
 - Static  
 Includes code that statically crawls stock name, prices and change from Naver and Google.  
-Includes code that statically crawls current exchange rate from Naver.
+Includes code that statically crawls current exchange rate from Naver.  
+Simple GUI is made with Streamlit.
 
 - Dynamic  
 Uses Selenium for to dynamically crawl Chrome.  
@@ -47,3 +49,11 @@ Install Docker, then run
 ```sh
 docker run -p 4444:4444 selenium/standalone-chrome
 ```
+
+## Static UI local development
+
+``` sh
+python -m streamlit run static/gui.py
+```
+
+The UI should be on <http://localhost:8501/>
