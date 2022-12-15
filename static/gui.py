@@ -58,7 +58,16 @@ captures = r.findall(body)
 for c in captures:
     st.write(c[0] + ": " + c[1])
 
-usd = float(captures[0][1].replace(",", ""))
-won = float(st.text_input("달러로 바꾸기 원하는 금액(원)을 입력하세요: "))
-dollar = round(float(won/usd), 2)
-st.write(f"현재 {won}원은 {dollar}달러입니다.")
+usd = captures[0][1].replace(",", "")
+won = st.text_input("Convert Won to Dollar: ")
+
+if len(won) > 0:
+    try:
+        with st.spinner(text="Converting..."):
+            time.sleep(3)
+        usd = float(usd)
+        won = float(won)
+        dollar = round(float(won/usd), 2)
+        st.write(f"Currently {won} won is {dollar} dollar(s).")
+    except KeyError:
+        st.error("Enter a number.")
