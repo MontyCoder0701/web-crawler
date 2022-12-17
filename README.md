@@ -32,6 +32,7 @@ Run venv
 - beautifulsoup4
 - selenium
 - streamlit
+- pyperclip
 
 ## Included files
 
@@ -43,6 +44,7 @@ Simple GUI is made with Streamlit.
 - Dynamic  
 Uses Selenium for to dynamically crawl Chrome.  
 If necessary, download Chromedriver that supports your Chrome version. <https://chromedriver.chromium.org/downloads>  
+Please note that using Chromedriver for Selenium has been deprecated, so the step above is no longer necessary.
 
 Install Docker, then run
 
