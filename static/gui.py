@@ -32,16 +32,23 @@ with col1:
     url = "https://finance.naver.com/sise/lastsearch2.naver"
     res = req.get(url)
     soup = BS(res.text, "html.parser")
+    
+    list_one = []
 
     for tr in soup.select("table.type_5 tr")[2:]:
         if len(tr.select("a.tltle")) == 0:
             continue
         title = tr.select("a.tltle")[0].get_text(strip=True)
+        list_one.append(title)
         price = tr.select("td.number:nth-child(4)")[0].get_text(strip=True)
         change = tr.select("td.number:nth-child(6)")[0].get_text(strip=True)
+        if len(list_one) >= 11:
+            break
         st.write(title, price, change)
 
 with col2:
+    list_two = []
+
     st.subheader("Most Active Stocks (Live from Google)")
     url = "https://www.google.com/finance/markets/most-active?hl=en"
     res = req.get(url)
@@ -49,8 +56,11 @@ with col2:
 
     for stat in soup.select("ul.sbnBtf li div.SxcTic"):
         title = stat.select("div.ZvmM7")[0].get_text(strip=True)
+        list_two.append(title)
         price = stat.select("div.YMlKec")[0].get_text(strip=True)
         change = stat.select("div.JwB6zf")[0].get_text(strip=True)
+        if len(list_two) >= 11:
+            break
         st.write(title, price, change)
 
 with col3:

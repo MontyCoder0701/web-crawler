@@ -8,22 +8,22 @@ For both static and dynamic crawling.
 
 ## Virtual environment setup
 
-Install venv
-
-```sh
-python3 -m pip install --user virtualenv
-```
-
 Create venv
 
 ```sh
-python3 -m venv env
+py -m venv env
 ```
 
 Run venv
 
 ```sh
-.\env\Scripts\activate
+.\env\Scripts\activate.ps1
+```
+
+If there is unrestricted access problems,
+
+```sh
+Set-ExecutionPolicy Unrestricted -Scope Process
 ```
 
 ## Used libraries
@@ -33,6 +33,12 @@ Run venv
 - selenium
 - streamlit
 - pyperclip
+
+## Installing libraries
+
+```sh
+py -m pip install [library-name]
+```
 
 ## Included files
 
@@ -55,7 +61,7 @@ docker run -p 4444:4444 selenium/standalone-chrome
 ## Static UI local development
 
 ``` sh
-python -m streamlit run static/gui.py
+py -m streamlit run static/gui.py
 ```
 
 The UI should be on <http://localhost:8501/>
