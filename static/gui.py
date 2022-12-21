@@ -4,6 +4,9 @@ import requests as req
 import re
 from bs4 import BeautifulSoup as BS
 import time
+import seaborn as sns
+import pandas as pd
+import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 
@@ -20,6 +23,18 @@ components.html(
     """,
     height=150,
 )
+
+st.subheader("Historical Interest Rates of US")
+
+st.sidebar.subheader("Customize Plot Size")
+width = st.sidebar.slider("Plot width", 1, 25, 10)
+height = st.sidebar.slider("Plot height", 1, 25, 2)
+
+df = pd.read_csv("static/interest.csv")
+fig = plt.figure(figsize=(width, height))
+ax = sns.kdeplot(data=df, x="INTDSRUSM193N")
+ax.set(xlabel='Date', ylabel='Interest Rate', xticklabels=[], yticklabels=[])
+st.pyplot(fig)
 
 with st.spinner(text="Live Crawling..."):
     time.sleep(5)
