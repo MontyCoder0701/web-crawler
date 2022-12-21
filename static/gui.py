@@ -24,18 +24,14 @@ components.html(
 with st.spinner(text="Live Crawling..."):
     time.sleep(5)
     st.success("Loading complete.")
-    
+
 url = "https://www.timeanddate.com/worldclock/south-korea/seoul"
 res = req.get(url)
 soup = BS(res.text, "html.parser")
 
 for stat in soup.select("div.bk-focus__qlook"):
     now_time = stat.select("span.h1")[0].get_text(strip=True)
-    if now_time[0:2] == "오전":
-        format_time = now_time[2:-1] + " AM"
-    else:
-        format_time = now_time[2:-1] + " PM"
-    st.write("Live Crawled Time: " + format_time) 
+    st.write("Live Crawled Time: " + now_time)
 
 col1, col2, col3 = st.columns([1, 1, 2], gap="large")
 
@@ -44,7 +40,7 @@ with col1:
     url = "https://finance.naver.com/sise/lastsearch2.naver"
     res = req.get(url)
     soup = BS(res.text, "html.parser")
-    
+
     list_one = []
 
     for tr in soup.select("table.type_5 tr")[2:]:
