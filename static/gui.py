@@ -27,7 +27,7 @@ components.html(
 components.html(
     """
     <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
-    Historical Interest Rates of US
+    Historical Interest Rates
     </div>
     """,
     height=30,
@@ -35,14 +35,23 @@ components.html(
 
 
 st.sidebar.subheader("Customize Plot Size")
-width = st.sidebar.slider("Plot width", 1, 25, 10)
+width = st.sidebar.slider("Plot width", 1, 25, 15)
 height = st.sidebar.slider("Plot height", 1, 25, 2)
 
-df = pd.read_csv("static/interest.csv")
-fig = plt.figure(figsize=(width, height))
+df = pd.read_csv("static/us.csv")
+fig1 = plt.figure(figsize=(width, height))
 ax = sns.kdeplot(data=df, x="INTDSRUSM193N")
-ax.set(xlabel='', ylabel='IR(%)', xticklabels=[], yticklabels=[])
-st.pyplot(fig)
+ax.set(xlabel='', ylabel='IR(%)', xticklabels=[],
+       yticklabels=[], title="United States")
+st.pyplot(fig1)
+
+df = pd.read_csv("static/korea.csv")
+fig2 = plt.figure(figsize=(width, height))
+ax = sns.kdeplot(data=df, x="INTDSRKRM193N")
+ax.set(xlabel='', ylabel='IR(%)', xticklabels=[],
+       yticklabels=[], title="South Korea")
+st.pyplot(fig2)
+
 
 components.html(
     """
@@ -51,10 +60,6 @@ components.html(
     """,
     height=30,
 )
-
-with st.spinner(text="Live Crawling..."):
-    time.sleep(5)
-    st.success("Loading complete.")
 
 url = "https://www.timeanddate.com/worldclock/south-korea/seoul"
 res = req.get(url)
@@ -62,22 +67,14 @@ soup = BS(res.text, "html.parser")
 
 for stat in soup.select("div.bk-focus__qlook"):
     now_time = stat.select("span.h1")[0].get_text(strip=True)
-    st.write("Live Crawled Time: " + now_time)
-
-components.html(
-    """
-    <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
-    Most Active Stocks
-    </div>
-    """,
-    height=30,
-)
-
+    with st.spinner(text="Live Crawling..."):
+        time.sleep(5)
+        st.success("Crawling complete. Live Crawled Time: " + now_time)
 
 col1, col2, col3 = st.columns([1, 1, 2], gap="large")
 
 with col1:
-    st.subheader("Naver")
+    st.subheader(":blue[Naver]")
     url = "https://finance.naver.com/sise/lastsearch2.naver"
     res = req.get(url)
     soup = BS(res.text, "html.parser")
@@ -98,7 +95,7 @@ with col1:
 with col2:
     list_two = []
 
-    st.subheader("Google")
+    st.subheader(":blue[Google]")
     url = "https://www.google.com/finance/markets/most-active?hl=en"
     res = req.get(url)
     soup = BS(res.text, "html.parser")
@@ -113,7 +110,8 @@ with col2:
         st.write(title, price, change)
 
 with col3:
-    st.subheader("Exchange Rate (Live from Naver)")
+    list_three = []
+    st.subheader(":blue[Exchange Rate]")
     url = "https://finance.naver.com/marketindex/"
     res = req.get(url)
     body = res.text
@@ -121,9 +119,6 @@ with col3:
     r = re.compile(
         r"h_lst.*?blind\">(.*?)</span>.*?value\">(.*?)</", re.DOTALL)
     captures = r.findall(body)
-
-    for c in captures:
-        st.write(c[0] + ": " + c[1])
 
     usd = captures[0][1].replace(",", "")
     won = st.text_input("Convert Won to Dollar: ")
@@ -138,3 +133,9 @@ with col3:
             st.write(f"Currently {won} won is {dollar} dollar(s).")
         except KeyError:
             st.error("Enter a number.")
+
+    for c in captures:
+        list_three.append(c)
+        if len(list_three) >= 9:
+            break
+        st.write(c[0] + ": " + c[1])
