@@ -21,10 +21,18 @@ components.html(
     </div>
     </div>
     """,
-    height=150,
+    height=120,
 )
 
-st.subheader("Historical Interest Rates of US")
+components.html(
+    """
+    <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
+    Historical Interest Rates of US
+    </div>
+    """,
+    height=30,
+)
+
 
 st.sidebar.subheader("Customize Plot Size")
 width = st.sidebar.slider("Plot width", 1, 25, 10)
@@ -33,8 +41,16 @@ height = st.sidebar.slider("Plot height", 1, 25, 2)
 df = pd.read_csv("static/interest.csv")
 fig = plt.figure(figsize=(width, height))
 ax = sns.kdeplot(data=df, x="INTDSRUSM193N")
-ax.set(xlabel='Date', ylabel='Interest Rate', xticklabels=[], yticklabels=[])
+ax.set(xlabel='', ylabel='IR(%)', xticklabels=[], yticklabels=[])
 st.pyplot(fig)
+
+components.html(
+    """
+    <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
+    </div>
+    """,
+    height=30,
+)
 
 with st.spinner(text="Live Crawling..."):
     time.sleep(5)
@@ -48,10 +64,20 @@ for stat in soup.select("div.bk-focus__qlook"):
     now_time = stat.select("span.h1")[0].get_text(strip=True)
     st.write("Live Crawled Time: " + now_time)
 
+components.html(
+    """
+    <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
+    Most Active Stocks
+    </div>
+    """,
+    height=30,
+)
+
+
 col1, col2, col3 = st.columns([1, 1, 2], gap="large")
 
 with col1:
-    st.subheader("Most Active Stocks (Live from Naver)")
+    st.subheader("Naver")
     url = "https://finance.naver.com/sise/lastsearch2.naver"
     res = req.get(url)
     soup = BS(res.text, "html.parser")
@@ -72,7 +98,7 @@ with col1:
 with col2:
     list_two = []
 
-    st.subheader("Most Active Stocks (Live from Google)")
+    st.subheader("Google")
     url = "https://www.google.com/finance/markets/most-active?hl=en"
     res = req.get(url)
     soup = BS(res.text, "html.parser")
