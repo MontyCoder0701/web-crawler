@@ -16,7 +16,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-st.set_page_config(layout="wide")
+st.set_page_config(page_title="Live Stocks", page_icon="📈", layout="wide",
+                   initial_sidebar_state="auto", menu_items=None)
 
 st.sidebar.subheader(":blue[Investment Sentiment]")
 
