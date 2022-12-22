@@ -126,7 +126,7 @@ options.add_argument("no-sandbox")
 driver = get_driver()
 driver.get("https://google.com")
 
-wait = WebDriverWait(driver, 5)
+wait = WebDriverWait(driver, 10)
 
 
 def find(wait, css_selector):
