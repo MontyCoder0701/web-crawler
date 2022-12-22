@@ -18,6 +18,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 st.set_page_config(layout="wide")
 
+st.sidebar.subheader(":blue[Investment Sentiment]")
+
 components.html(
     """
     <div style= "color: #0F52BA; font-weight: bold; text-align: left; font-size: 40px; font-family: Trebuchet MS; box-shadow: 5px 5px 5px #ADD8E6" >
@@ -101,15 +103,6 @@ components.html(
     height=10,
 )
 
-components.html(
-    """
-    <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
-    Investment Sentiment for 2022
-    </div>
-    """,
-    height=30,
-)
-
 
 def get_driver():
     return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
@@ -138,7 +131,7 @@ search.send_keys("invest now 2022\n")
 
 positive = wait.until(EC.presence_of_element_located(
     (By.CSS_SELECTOR, "#result-stats")))
-st.write("Positive:" + positive.text)
+st.sidebar.write("Positive:" + positive.text)
 positive = str("Positive:" + positive.text).replace(',', '')
 positive = positive.split()
 
@@ -147,17 +140,17 @@ search = find(wait, "body > div.L3eUgb > div.o3j99.ikrT4e.om7nvf > form > div:nt
 search.send_keys("don't invest now 2022\n")
 negative = wait.until(EC.presence_of_element_located(
     (By.CSS_SELECTOR, "#result-stats")))
-st.write("Negative:" + negative.text)
+st.sidebar.write("Negative:" + negative.text)
 negative = str("Negative:" + negative.text).replace(',', '')
 negative = negative.split()
 driver.close()
 
 if int(positive[1]) > int(negative[1]):
-    st.subheader(":green[We recommend you to invest this year.]")
+    st.sidebar.subheader(":green[We recommend investing.]")
 elif int(negative[1]) > int(positive[1]):
-    st.subheader(":red[We recommend you not to invest this year.]")
+    st.sidebar.subheader("We don't recommend investing.")
 else:
-    st.subheader("We recommend you wait to see more market change.")
+    st.sidebar.subheader("We recommend you wait to see more market change.")
 
     # components.html(
     #     """
@@ -192,7 +185,7 @@ components.html(
     <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
     </div>
     """,
-    height=30,
+    height=15,
 )
 
 col1, col2, col3 = st.columns([1, 1, 2], gap="large")
