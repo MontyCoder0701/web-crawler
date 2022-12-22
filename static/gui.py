@@ -11,9 +11,10 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.keys import Keys
 
 st.set_page_config(layout="wide")
 
@@ -50,7 +51,12 @@ for stat in soup.select("div.bk-focus__qlook"):
         time.sleep(5)
         st.success("Crawling complete. Live Crawled Time: " + now_time)
 
-options = webdriver.ChromeOptions()
+
+def get_driver():
+    return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+
+options = Options()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
 options.add_argument("window-size=1000,1000")
 options.add_argument("lang=en-GB")
@@ -58,11 +64,10 @@ options.add_argument('--headless')
 options.add_argument('--disable-gpu')
 options.add_argument("no-sandbox")
 
-chrome = webdriver.Chrome(service=Service(
-    ChromeDriverManager().install()), options=options)
-chrome.get("https://google.com")
+driver = get_driver()
+driver.get("https://google.com")
 
-wait = WebDriverWait(chrome, 10)
+wait = WebDriverWait(driver, 10)
 
 
 def find(wait, css_selector):
@@ -88,7 +93,7 @@ headline_3 = wait.until(EC.presence_of_element_located(
     (By.CSS_SELECTOR, "#rso > div > div > div:nth-child(3) > div > div > a > div > div.iRPxbe > div.mCBkyc.ynAwRc.MBeuO.nDgy9d")))
 st.write(headline_3.text)
 
-chrome.close()
+driver.close()
 
 components.html(
     """
