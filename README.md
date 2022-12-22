@@ -66,5 +66,4 @@ py -m streamlit run static/gui.py
 
 ![image](https://user-images.githubusercontent.com/104475739/208848737-ccc592a9-d8cf-46f7-8385-8b32b9c9fcb5.png)
 
-
 The UI should be on <http://localhost:8501/>

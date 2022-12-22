@@ -50,7 +50,6 @@ for stat in soup.select("div.bk-focus__qlook"):
         time.sleep(5)
         st.success("Crawling complete. Live Crawled Time: " + now_time)
 
-
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-logging"])
 options.add_argument("window-size=1000,1000")
@@ -91,6 +90,13 @@ st.write(headline_3.text)
 
 chrome.close()
 
+components.html(
+    """
+    <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
+    </div>
+    """,
+    height=10,
+)
 
 components.html(
     """
