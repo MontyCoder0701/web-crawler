@@ -32,15 +32,6 @@ components.html(
     height=120,
 )
 
-components.html(
-    """
-    <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
-    Current Top Articles
-    </div>
-    """,
-    height=30,
-)
-
 url = "https://www.timeanddate.com/worldclock/south-korea/seoul"
 res = req.get(url)
 soup = BS(res.text, "html.parser")
@@ -50,6 +41,15 @@ for stat in soup.select("div.bk-focus__qlook"):
     with st.spinner(text="Live Crawling..."):
         time.sleep(5)
         st.success("Crawling complete. Live Crawled Time: " + now_time)
+
+components.html(
+    """
+    <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
+    Current Top Articles
+    </div>
+    """,
+    height=30,
+)
 
 
 def get_driver():
@@ -67,7 +67,7 @@ options.add_argument("no-sandbox")
 driver = get_driver()
 driver.get("https://google.com")
 
-wait = WebDriverWait(driver, 10)
+wait = WebDriverWait(driver, 5)
 
 
 def find(wait, css_selector):
@@ -93,8 +93,6 @@ headline_3 = wait.until(EC.presence_of_element_located(
     (By.CSS_SELECTOR, "#rso > div > div > div:nth-child(3) > div > div > a > div > div.iRPxbe > div.mCBkyc.ynAwRc.MBeuO.nDgy9d")))
 st.write(headline_3.text)
 
-driver.close()
-
 components.html(
     """
     <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
@@ -106,30 +104,76 @@ components.html(
 components.html(
     """
     <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
-    Historical Interest Rates
+    Investment Sentiment for 2022
     </div>
     """,
     height=30,
 )
 
 
-st.sidebar.subheader("Customize Plot Size")
-width = st.sidebar.slider("Plot width", 1, 25, 15)
-height = st.sidebar.slider("Plot height", 1, 25, 2)
+def get_driver():
+    return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-df = pd.read_csv("static/us.csv")
-fig1 = plt.figure(figsize=(width, height))
-ax = sns.kdeplot(data=df, x="INTDSRUSM193N")
-ax.set(xlabel='', ylabel='IR(%)', xticklabels=[],
-       yticklabels=[], title="United States")
-st.pyplot(fig1)
 
-df = pd.read_csv("static/korea.csv")
-fig2 = plt.figure(figsize=(width, height))
-ax = sns.kdeplot(data=df, x="INTDSRKRM193N")
-ax.set(xlabel='', ylabel='IR(%)', xticklabels=[],
-       yticklabels=[], title="South Korea")
-st.pyplot(fig2)
+options = Options()
+options.add_experimental_option("excludeSwitches", ["enable-logging"])
+options.add_argument("window-size=1000,1000")
+options.add_argument("lang=en-GB")
+options.add_argument('--headless')
+options.add_argument('--disable-gpu')
+options.add_argument("no-sandbox")
+
+driver = get_driver()
+driver.get("https://google.com")
+
+wait = WebDriverWait(driver, 5)
+
+
+def find(wait, css_selector):
+    return wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, css_selector)))
+
+
+search = find(wait, "body > div.L3eUgb > div.o3j99.ikrT4e.om7nvf > form > div:nth-child(1) > div.A8SBwf > div.RNNXgb > div > div.a4bIc > input")
+search.send_keys("invest now 2022\n")
+
+positive = wait.until(EC.presence_of_element_located(
+    (By.CSS_SELECTOR, "#result-stats")))
+st.write("Positive:" + positive.text)
+
+driver.get("https://google.com")
+search = find(wait, "body > div.L3eUgb > div.o3j99.ikrT4e.om7nvf > form > div:nth-child(1) > div.A8SBwf > div.RNNXgb > div > div.a4bIc > input")
+search.send_keys("don't invest now 2022\n")
+negative = wait.until(EC.presence_of_element_located(
+    (By.CSS_SELECTOR, "#result-stats")))
+st.write("Negative:" + negative.text)
+driver.close()
+
+# components.html(
+#     """
+#     <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
+#     Historical Interest Rates
+#     </div>
+#     """,
+#     height=30,
+# )
+
+# st.sidebar.subheader("Customize Plot Size")
+# width = st.sidebar.slider("Plot width", 1, 25, 15)
+# height = st.sidebar.slider("Plot height", 1, 25, 2)
+
+# df = pd.read_csv("static/us.csv")
+# fig1 = plt.figure(figsize=(width, height))
+# ax = sns.kdeplot(data=df, x="INTDSRUSM193N")
+# ax.set(xlabel='', ylabel='IR(%)', xticklabels=[],
+#        yticklabels=[], title="United States")
+# st.pyplot(fig1)
+
+# df = pd.read_csv("static/korea.csv")
+# fig2 = plt.figure(figsize=(width, height))
+# ax = sns.kdeplot(data=df, x="INTDSRKRM193N")
+# ax.set(xlabel='', ylabel='IR(%)', xticklabels=[],
+#        yticklabels=[], title="South Korea")
+# st.pyplot(fig2)
 
 
 components.html(
@@ -139,16 +183,6 @@ components.html(
     """,
     height=30,
 )
-
-url = "https://www.timeanddate.com/worldclock/south-korea/seoul"
-res = req.get(url)
-soup = BS(res.text, "html.parser")
-
-for stat in soup.select("div.bk-focus__qlook"):
-    now_time = stat.select("span.h1")[0].get_text(strip=True)
-    with st.spinner(text="Live Crawling..."):
-        time.sleep(5)
-        st.success("Crawling complete. Live Crawled Time: " + now_time)
 
 col1, col2, col3 = st.columns([1, 1, 2], gap="large")
 
