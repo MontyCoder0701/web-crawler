@@ -64,6 +64,7 @@ docker run -p 4444:4444 selenium/standalone-chrome
 py -m streamlit run static/gui.py
 ```
 
-![image](https://user-images.githubusercontent.com/104475739/208848737-ccc592a9-d8cf-46f7-8385-8b32b9c9fcb5.png)
+![image](https://user-images.githubusercontent.com/104475739/209063586-069b49ee-c46d-4d39-8158-7a96edfa9aef.png)
+
 
 The UI should be on <http://localhost:8501/>
