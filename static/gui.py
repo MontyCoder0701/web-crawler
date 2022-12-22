@@ -139,6 +139,8 @@ search.send_keys("invest now 2022\n")
 positive = wait.until(EC.presence_of_element_located(
     (By.CSS_SELECTOR, "#result-stats")))
 st.write("Positive:" + positive.text)
+positive = str("Positive:" + positive.text).replace(',', '')
+positive = positive.split()
 
 driver.get("https://google.com")
 search = find(wait, "body > div.L3eUgb > div.o3j99.ikrT4e.om7nvf > form > div:nth-child(1) > div.A8SBwf > div.RNNXgb > div > div.a4bIc > input")
@@ -146,34 +148,43 @@ search.send_keys("don't invest now 2022\n")
 negative = wait.until(EC.presence_of_element_located(
     (By.CSS_SELECTOR, "#result-stats")))
 st.write("Negative:" + negative.text)
+negative = str("Negative:" + negative.text).replace(',', '')
+negative = negative.split()
 driver.close()
 
-# components.html(
-#     """
-#     <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
-#     Historical Interest Rates
-#     </div>
-#     """,
-#     height=30,
-# )
+if int(positive[1]) > int(negative[1]):
+    st.subheader(":green[We recommend you to invest this year.]")
+elif int(negative[1]) > int(positive[1]):
+    st.subheader(":red[We recommend you not to invest this year.]")
+else:
+    st.subheader("We recommend you wait to see more market change.")
 
-# st.sidebar.subheader("Customize Plot Size")
-# width = st.sidebar.slider("Plot width", 1, 25, 15)
-# height = st.sidebar.slider("Plot height", 1, 25, 2)
+    # components.html(
+    #     """
+    #     <div style= "color: #000040; font-weight: bold; text-align: left; font-size: 20px; font-family: Trebuchet MS" >
+    #     Historical Interest Rates
+    #     </div>
+    #     """,
+    #     height=30,
+    # )
 
-# df = pd.read_csv("static/us.csv")
-# fig1 = plt.figure(figsize=(width, height))
-# ax = sns.kdeplot(data=df, x="INTDSRUSM193N")
-# ax.set(xlabel='', ylabel='IR(%)', xticklabels=[],
-#        yticklabels=[], title="United States")
-# st.pyplot(fig1)
+    # st.sidebar.subheader("Customize Plot Size")
+    # width = st.sidebar.slider("Plot width", 1, 25, 15)
+    # height = st.sidebar.slider("Plot height", 1, 25, 2)
 
-# df = pd.read_csv("static/korea.csv")
-# fig2 = plt.figure(figsize=(width, height))
-# ax = sns.kdeplot(data=df, x="INTDSRKRM193N")
-# ax.set(xlabel='', ylabel='IR(%)', xticklabels=[],
-#        yticklabels=[], title="South Korea")
-# st.pyplot(fig2)
+    # df = pd.read_csv("static/us.csv")
+    # fig1 = plt.figure(figsize=(width, height))
+    # ax = sns.kdeplot(data=df, x="INTDSRUSM193N")
+    # ax.set(xlabel='', ylabel='IR(%)', xticklabels=[],
+    #        yticklabels=[], title="United States")
+    # st.pyplot(fig1)
+
+    # df = pd.read_csv("static/korea.csv")
+    # fig2 = plt.figure(figsize=(width, height))
+    # ax = sns.kdeplot(data=df, x="INTDSRKRM193N")
+    # ax.set(xlabel='', ylabel='IR(%)', xticklabels=[],
+    #        yticklabels=[], title="South Korea")
+    # st.pyplot(fig2)
 
 
 components.html(
